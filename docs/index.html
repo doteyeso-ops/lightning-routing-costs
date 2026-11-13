@@ -1,0 +1,33 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lightning routing income vs rebalancing cost: which number you are not measuring</title>
+<meta name="description" content="How to measure Lightning node profitability: routing income against rebalancing cost, channel drag, fee policy, and the numbers an audit actually counts.">
+<link rel="canonical" href="https://doteyeso-ops.github.io/lightning-routing-costs/">
+<style>
+ body{margin:0;background:#f2ece0;color:#191610;font:17px/1.62 Georgia,'Iowan Old Style',serif}
+ .sheet{max-width:760px;margin:0 auto;padding:56px 28px 90px}
+ .k{font:11px/1 ui-monospace,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;color:#8a7f6a}
+ h1{font-size:44px;line-height:1.06;letter-spacing:-.02em;font-weight:500;margin:14px 0 0}
+ .lede{font-size:20px;color:#4b4437;margin:18px 0 0}
+ h2{font-size:22px;margin:46px 0 10px;font-weight:500}
+ .f{border-top:1px solid #c9bda4;padding:14px 0}
+ .f span{font:11px/1 ui-monospace,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;color:#8a7f6a}
+ .f p{margin:6px 0 0}
+ ol{padding-left:22px} li{margin:10px 0}
+ details{border-top:1px solid #c9bda4;padding:12px 0} summary{cursor:pointer}
+ .cta{border:1px solid #191610;padding:18px 20px;margin:38px 0 0;background:#fbf7ec}
+ .cta a{color:#a2311a}
+ footer{margin-top:54px;font:12px/1.5 ui-monospace,Menlo,monospace;color:#6f6656}
+</style></head><body><div class="sheet">
+<div class="k">Lightning economics</div>
+<h1>Lightning routing income vs rebalancing cost: which number you are not measuring</h1>
+<p class="lede">A node can be profitable on routing fees and still lose money every month, because the fee line and the rebalancing line live in different tools.</p>
+<p>Running a Lightning node produces two ledgers that are rarely read together. On one side, routing fees earned. On the other, what it cost to keep liquidity where the payments needed it - circular rebalances, on-chain opens and closes, and channels that are funded but never route. A node can look busy and still be a subscription to its own curiosity.</p>
+<h2>The numbers that decide it</h2><div class='f'><span>Fee income alone is not profit</span><p>Reconciled against rebalancing and channel churn, most small nodes are negative. The fee number is the one every dashboard shows.</p></div><div class='f'><span>Channel drag is the invisible cost</span><p>A channel that never routes is capital parked. Multiply the sats by the months it has been idle and that is the real cost of an opinion you had last year.</p></div><div class='f'><span>Fee policy decides who routes through you</span><p>Zero fees do not produce volume; they produce volume from people who would not otherwise pay. Price against the opportunity cost of the liquidity.</p></div><div class='f'><span>Rebalancing has a market price</span><p>Circular rebalances, submarine swaps and boltz-style services each have a spread. Paying 30% of a month's income to keep one channel balanced is a decision, not an accident.</p></div><div class='f'><span>On-chain costs land rarely</span><p>A channel open can cost more than a month of fees. Amortise it or the monthly picture lies.</p></div>
+<h2>How to do it, in order</h2><ol><li><b>Pull the fee ledger.</b> Forwarding history gives fees earned per channel and per direction. Group by channel, not by day.</li><li><b>Pull the cost ledger.</b> Rebalances, opens, closes, swaps. If it is not recorded, estimate it - the point is to compare, not to be exact.</li><li><b>Compute per-channel P&L.</b> Fees earned minus the cost of keeping that channel balanced, minus amortised on-chain cost. Most nodes have two profitable channels and ten passengers.</li><li><b>Close the passengers.</b> Idle channels are the cheapest thing to fix: the capital comes back and the drag goes to zero.</li><li><b>Re-measure after 30 days.</b> One change at a time. Routing is noisy; a single day is not evidence.</li></ol>
+<h2>Questions</h2><details><summary>Is routing profitable for a small node?</summary><p>Usually not on fees alone once rebalancing and on-chain costs are counted. It becomes positive when you stop funding channels that do not route.</p></details><details><summary>What does a cost audit consist of?</summary><p>The two ledgers reconciled per channel, the drag quantified, and a list of closes and fee-policy changes with the arithmetic shown.</p></details><details><summary>Do you need custody to audit?</summary><p>No. Read-only exports are enough; nothing needs signing.</p></details>
+<div class="cta"><p>l3itcoin has free client-side calculators for routing income, rebalancing cost and channel drag, plus fixed-price reports that reconcile the two ledgers properly.</p>
+<p><b><a href="https://l3itcoin.com?utm_source=github&amp;utm_medium=repo&amp;utm_campaign=lightning-routing-costs">l3itcoin</a></b></p>
+<p class="k">Written by the person who builds l3itcoin. The calculators are free and need no account.</p></div>
+<footer>l3itcoin · Bitcoin and Lightning cost audits · l3itcoin.com</footer>
+</div></body></html>
